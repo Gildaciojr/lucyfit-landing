@@ -101,7 +101,7 @@ export default function Testimonials() {
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold">
-            Não acredite só em nós — veja quem já usa.
+            Não acredite somente em nós — veja quem já usa.
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Junte-se a milhares de pessoas que transformaram sua alimentação
