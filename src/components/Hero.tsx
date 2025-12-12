@@ -1,3 +1,4 @@
+// src/components/Hero.tsx
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import heroGif from "@/assets/gifs/meal-animation.gif";
@@ -9,16 +10,17 @@ const Hero = () => {
 
   return (
     <section className="relative overflow-hidden pt-24 pb-32 bg-gradient-to-b from-white via-purple-50/40 to-white">
-      {/* BOTÃO HOME FIXO (somente mobile) */}
+      
+      {/* BOTÃO HOME FIXO (mobile) */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Voltar para o topo"
-        className="lg:hidden fixed top-4 left-4 z-[999] bg-white/85 backdrop-blur-md border border-purple-200 shadow-lg px-3 py-2 rounded-xl flex items-center gap-2 transition active:scale-[0.98]"
+        className="lg:hidden fixed top-4 left-4 z-[999] bg-white/85 backdrop-blur-md border border-purple-200 shadow-lg px-3 py-2 rounded-xl flex items-center gap-2"
       >
         <img src={lucyLogo} className="h-6 w-auto" alt="LucyFit" />
       </button>
 
-      {/* Blobs animados */}
+      {/* Blobs */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 0.6 }}
@@ -33,7 +35,8 @@ const Hero = () => {
       />
 
       <div className="container mx-auto px-6 max-w-7xl grid lg:grid-cols-2 gap-14 lg:gap-20 items-center relative z-10">
-        {/* LADO ESQUERDO */}
+
+        {/* TEXTO */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -45,7 +48,6 @@ const Hero = () => {
             Experiência premium em alimentação e treinos
           </div>
 
-          {/* TÍTULO */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 tracking-tight">
             A forma mais simples de organizar sua alimentação, treinos e
             evolução é com a{" "}
@@ -53,7 +55,7 @@ const Hero = () => {
               <img
                 src={lucyLogo}
                 alt="LucyFit"
-                className="h-10 md:h-12 lg:h-10 w-auto drop-shadow-[0_3px_6px_rgba(0,0,0,0.25)]"
+                className="h-10 md:h-12 lg:h-10 w-auto"
               />
             </span>
           </h1>
@@ -63,31 +65,10 @@ const Hero = () => {
             tecnologia de ponta direto no seu WhatsApp.
           </p>
 
-          {/* MOBILE: VÍDEO/GIF CENTRALIZADO ABAIXO DO TEXTO (como no print) */}
-          <div className="lg:hidden pt-2">
+          {/* MOBILE — SOMENTE O TELEFONE (SEM HEADER E SEM TEXTO EXTRA) */}
+          <div className="lg:hidden pt-4">
             <div className="mx-auto max-w-md">
               <div className="relative rounded-3xl bg-white border border-purple-200 shadow-2xl overflow-hidden">
-                {/* header fake whatsapp */}
-                <div className="px-4 py-3 flex items-center justify-between bg-white border-b border-purple-100">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={lucyLogo}
-                      className="h-8 w-8 rounded-full"
-                      alt="LucyFit"
-                    />
-                    <div className="text-left">
-                      <p className="text-xs font-semibold text-gray-900">
-                        LucyFit • Assistente IA
-                      </p>
-                      <p className="text-[10px] text-gray-500">
-                        Conversa ativa no WhatsApp
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-gray-500">em tempo real</span>
-                </div>
-
-                {/* mídia */}
                 <img
                   src={heroGif}
                   alt="LucyFit conversando no WhatsApp"
@@ -97,26 +78,11 @@ const Hero = () => {
                 />
               </div>
             </div>
-
-            {/* NOVOS TEXTOS ABAIXO DO VÍDEO (como você pediu) */}
-            <div className="mt-6 space-y-2">
-              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
-                Siga sua dieta com a ajuda da I.A e a simplicidade do WhatsApp
-              </h2>
-              <p className="text-sm md:text-base text-gray-600">
-                Nunca foi tão fácil contar as calorias, macro e micronutrientes
-                de sua dieta
-              </p>
-            </div>
           </div>
 
           {/* CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-            <Button
-              size="lg"
-              className="h-12 px-8 text-base shadow-lg shadow-purple-400/20"
-              asChild
-            >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+            <Button size="lg" className="h-12 px-8 text-base shadow-lg shadow-purple-400/20" asChild>
               <a href="#pricing">
                 Assinar agora
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -124,7 +90,7 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* MÉTRICAS PREMIUM (mantendo o restante como está) */}
+          {/* MÉTRICAS */}
           <div className="mt-6 grid grid-cols-3 gap-4 max-w-sm mx-auto lg:mx-0">
             <div className="flex flex-col">
               <span className="text-xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
@@ -149,7 +115,7 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* LADO DIREITO – CARD DA IA (DESKTOP mantém como já estava) */}
+        {/* DESKTOP — TELEFONE SEM HEADER */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -157,21 +123,7 @@ const Hero = () => {
           className="relative hidden lg:flex justify-center"
         >
           <div className="absolute inset-0 w-[520px] h-[520px] bg-purple-300/40 blur-[110px] rounded-full" />
-
-          <div className="relative rounded-3xl backdrop-blur-xl bg-white/80 border border-white/60 shadow-2xl overflow-hidden max-w-md md:max-w-xl">
-            <div className="px-4 py-3 flex items-center justify-between bg-white/80 border-b border-white/50">
-              <div className="flex items-center gap-2">
-                <img src={lucyLogo} className="h-8 w-8 rounded-full" alt="LucyFit" />
-                <div>
-                  <p className="text-xs font-semibold">LucyFit • Assistente IA</p>
-                  <p className="text-[10px] text-gray-500">
-                    Conversa ativa no WhatsApp
-                  </p>
-                </div>
-              </div>
-              <span className="text-[10px] text-gray-500">em tempo real</span>
-            </div>
-
+          <div className="relative rounded-3xl bg-white border border-white/60 shadow-2xl overflow-hidden max-w-md md:max-w-xl">
             <img
               src={heroGif}
               alt="LucyFit conversando no WhatsApp"
