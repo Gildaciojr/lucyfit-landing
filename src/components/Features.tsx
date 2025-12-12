@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 import chatTyping from "@/assets/gifs/chat-typing.gif";
 import heroChat from "@/assets/gifs/hero-chat.gif";
-import mealAnimation from "@/assets/gifs/meal-animation.gif";
+import mealAnimation from "@/assets/gifs/meal-animation.mp4";
 
 const features = [
   {
