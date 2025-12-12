@@ -5,28 +5,64 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 import chatTyping from "@/assets/gifs/chat-typing.gif";
 import heroChat from "@/assets/gifs/hero-chat.gif";
-import mealAnimation from "@/assets/gifs/meal-animation.mp4";
+import mealVideo from "@/assets/gifs/meal-animation.mp4";
 
 const features = [
   {
     id: 0,
     title: "Capture sua refeição e deixe a I.A fazer o resto.",
     text: "Envie uma foto e receba análise automática de calorias, nutrientes e sugestões de melhoria.",
-    gif: chatTyping,
+    media: chatTyping,
   },
   {
     id: 1,
     title: "Fale com sua I.A como se fosse um nutricionista.",
     text: "Descreva seu prato por voz ou mensagem e receba a análise completa instantaneamente.",
-    gif: heroChat,
+    media: heroChat,
   },
   {
     id: 2,
     title: "Controle total, sem esforço.",
     text: "Acompanhe em tempo real quanto pode comer no dia, baseado nas suas metas.",
-    gif: mealAnimation,
+    media: mealVideo,
   },
 ];
+
+function MediaRenderer({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  const isVideo = src.endsWith(".mp4");
+
+  if (isVideo) {
+    return (
+      <video
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        className={className}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      className={className}
+    />
+  );
+}
 
 function FeatureCard({
   item,
@@ -41,7 +77,6 @@ function FeatureCard({
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
-
   const isInView = useInView(ref, { margin: "-30% 0px -30% 0px" });
 
   useEffect(() => {
@@ -63,14 +98,11 @@ function FeatureCard({
       <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
       <p className="text-gray-600 text-sm leading-relaxed">{item.text}</p>
 
-      {/* MOBILE GIF */}
+      {/* MOBILE MEDIA */}
       <div className="lg:hidden mt-5 rounded-xl overflow-hidden shadow">
-        <img
-          src={item.gif}
+        <MediaRenderer
+          src={item.media}
           alt={item.title}
-          loading="lazy"
-          decoding="async"
-          fetchPriority="low"
           className="w-full object-cover"
         />
       </div>
@@ -117,21 +149,21 @@ export default function Features() {
             ))}
           </div>
 
-          {/* DESKTOP GIF */}
+          {/* DESKTOP MEDIA */}
           <div className="hidden lg:block sticky top-32">
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-purple-200 bg-purple-50/40">
-              <motion.img
+              <motion.div
                 key={activeIndex}
-                src={features[activeIndex].gif}
-                alt="LucyFit em ação"
-                loading="lazy"
-                decoding="async"
-                fetchPriority="low"
-                className="w-full object-cover max-h-[650px]"
                 initial={{ opacity: 0.4 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
-              />
+              >
+                <MediaRenderer
+                  src={features[activeIndex].media}
+                  alt="LucyFit em ação"
+                  className="w-full object-cover max-h-[650px]"
+                />
+              </motion.div>
             </div>
           </div>
         </div>
