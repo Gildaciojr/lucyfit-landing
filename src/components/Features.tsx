@@ -53,21 +53,32 @@ function FeatureCard({
   index,
   activeIndex,
   setActiveIndex,
+  activatedRef,
 }: {
   item: (typeof features)[0];
   index: number;
   activeIndex: number;
   setActiveIndex: (i: number) => void;
+  activatedRef: React.MutableRefObject<Set<number>>;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
-  const isInView = useInView(ref, { margin: "-30% 0px -30% 0px" });
+
+  // ✅ HOOK SEMPRE CHAMADO (regra do React)
+  const isInView = useInView(ref, {
+    margin: "-30% 0px -30% 0px",
+  });
 
   useEffect(() => {
-    if (!isMobile && isInView) {
+    // 🔒 Mobile IGNORA completamente viewport logic
+    if (isMobile) return;
+
+    // 🔒 Cada card ativa apenas UMA vez
+    if (isInView && !activatedRef.current.has(index)) {
+      activatedRef.current.add(index);
       setActiveIndex(index);
     }
-  }, [isInView, isMobile, index, setActiveIndex]);
+  }, [isInView, isMobile, index, setActiveIndex, activatedRef]);
 
   const isActive = activeIndex === index;
 
@@ -107,11 +118,13 @@ export default function Features() {
   const isMobile = useIsMobile();
   const motionCfg = useMotionConfig();
 
+  // 🔒 Guarda quais cards já ativaram (não reativa ao voltar scroll)
+  const activatedRef = useRef<Set<number>>(new Set());
+
   return (
     <section id="features" className="py-32 bg-white">
       <div className="container mx-auto px-6 max-w-7xl">
-
-        {/* 🔥 TÍTULO — SEMPRE VISÍVEL */}
+        {/* TÍTULO — SEMPRE VISÍVEL */}
         {isMobile ? (
           <h2 className="text-4xl font-bold text-center mb-20">
             Como a LucyFit te ajuda todos os dias
@@ -134,6 +147,7 @@ export default function Features() {
                 index={index}
                 activeIndex={activeIndex}
                 setActiveIndex={setActiveIndex}
+                activatedRef={activatedRef}
               />
             ))}
           </div>
