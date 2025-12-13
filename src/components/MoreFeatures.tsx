@@ -108,30 +108,46 @@ export default function MoreFeatures() {
 
         {/* GRID */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={isMobile ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: isMobile ? 0 : 0.3 }}
-              className="p-6 rounded-2xl bg-white shadow-md border border-purple-100 flex flex-col"
-            >
-              {/* ICON */}
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4">
-                <item.icon className="w-5 h-5 text-white" />
+          {features.map((item, index) =>
+            isMobile ? (
+              <div
+                key={index}
+                className="p-6 rounded-2xl bg-white shadow-md border border-purple-100 flex flex-col"
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4">
+                  <item.icon className="w-5 h-5 text-white" />
+                </div>
+
+                <h3 className="font-semibold text-lg mb-2 text-gray-900 min-h-[3rem]">
+                  {item.title}
+                </h3>
+
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {item.description}
+                </p>
               </div>
+            ) : (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="p-6 rounded-2xl bg-white shadow-md border border-purple-100 flex flex-col"
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4">
+                  <item.icon className="w-5 h-5 text-white" />
+                </div>
 
-              {/* TITLE */}
-              <h3 className="font-semibold text-lg mb-2 text-gray-900 break-words whitespace-normal min-h-[3rem]">
-                {item.title}
-              </h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900 min-h-[3rem]">
+                  {item.title}
+                </h3>
 
-              {/* DESCRIPTION */}
-              <p className="text-sm text-gray-600 leading-relaxed break-words whitespace-normal">
-                {item.description}
-              </p>
-            </motion.div>
-          ))}
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ),
+          )}
         </div>
       </div>
     </section>

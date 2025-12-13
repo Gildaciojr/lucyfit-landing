@@ -1,11 +1,11 @@
-// src/components/Features.tsx
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useMotionConfig } from "@/lib/motion-config";
 
 import chatTyping from "@/assets/gifs/chat-typing.gif";
 import heroChat from "@/assets/gifs/hero-chat.gif";
-import mealVideo from "@/assets/gifs/meal-animation.mp4";
+import mealGif from "@/assets/gifs/meal-animation.gif";
 
 const features = [
   {
@@ -24,7 +24,7 @@ const features = [
     id: 2,
     title: "Controle total, sem esforço.",
     text: "Acompanhe em tempo real quanto pode comer no dia, baseado nas suas metas.",
-    media: mealVideo,
+    media: mealGif,
   },
 ];
 
@@ -37,22 +37,6 @@ function MediaRenderer({
   alt: string;
   className?: string;
 }) {
-  const isVideo = src.endsWith(".mp4");
-
-  if (isVideo) {
-    return (
-      <video
-        src={src}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className={className}
-      />
-    );
-  }
-
   return (
     <img
       src={src}
@@ -80,13 +64,15 @@ function FeatureCard({
   const isInView = useInView(ref, { margin: "-30% 0px -30% 0px" });
 
   useEffect(() => {
-    if (!isMobile && isInView) setActiveIndex(index);
+    if (!isMobile && isInView) {
+      setActiveIndex(index);
+    }
   }, [isInView, isMobile, index, setActiveIndex]);
 
   const isActive = activeIndex === index;
 
   return (
-    <motion.div
+    <div
       ref={ref}
       onMouseEnter={() => !isMobile && setActiveIndex(index)}
       className={`cursor-pointer relative overflow-hidden rounded-2xl p-6 border transition-all ${
@@ -107,30 +93,27 @@ function FeatureCard({
         />
       </div>
 
-      {isActive && (
+      {!isMobile && isActive && (
         <div className="mt-5 h-1.5 w-full rounded-full bg-purple-100 overflow-hidden">
-          <motion.div
+          <div
             className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500"
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 3, ease: "linear" }}
+            style={{ width: "100%" }}
           />
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const motionCfg = useMotionConfig();
 
   return (
     <section id="features" className="py-32 bg-white">
       <div className="container mx-auto px-6 max-w-7xl">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          {...motionCfg}
           className="text-4xl md:text-5xl font-bold text-center mb-20"
         >
           Como a LucyFit te ajuda todos os dias

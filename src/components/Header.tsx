@@ -20,35 +20,20 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* LOGO */}
           <button onClick={() => navigate("/")}>
-            <img src={lucyLogo} className="h-10 lg:h-12" alt="LucyFit" />
+            <img
+              src={lucyLogo}
+              className="h-10 lg:h-12"
+              alt="LucyFit"
+              loading="eager"
+            />
           </button>
 
           {/* DESKTOP MENU */}
           <nav className="hidden lg:flex items-center gap-10 text-sm font-medium">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="hover:text-primary"
-            >
-              Funcionalidades
-            </button>
-            <button
-              onClick={() => scrollToSection("how-it-works")}
-              className="hover:text-primary"
-            >
-              Como funciona
-            </button>
-            <button
-              onClick={() => scrollToSection("pricing")}
-              className="hover:text-primary"
-            >
-              Preço
-            </button>
-            <button
-              onClick={() => scrollToSection("testimonials")}
-              className="hover:text-primary"
-            >
-              Depoimentos
-            </button>
+            <button onClick={() => scrollToSection("features")}>Funcionalidades</button>
+            <button onClick={() => scrollToSection("how-it-works")}>Como funciona</button>
+            <button onClick={() => scrollToSection("pricing")}>Preço</button>
+            <button onClick={() => scrollToSection("testimonials")}>Depoimentos</button>
           </nav>
 
           {/* CTA */}
@@ -59,46 +44,27 @@ export default function Header() {
           </div>
 
           {/* MOBILE MENU BUTTON */}
-          <button
-            className="lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
+          <button className="lg:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <Menu className="h-6 w-6" />
           </button>
         </div>
 
         {/* MOBILE MENU */}
         {mobileMenuOpen && (
-          <div className="lg:hidden space-y-4 py-4 animate-fade-in">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="block w-full py-2 hover:text-primary"
-            >
+          <div className="lg:hidden space-y-4 py-4">
+            <button onClick={() => scrollToSection("features")} className="block w-full py-2">
               Funcionalidades
             </button>
-            <button
-              onClick={() => scrollToSection("how-it-works")}
-              className="block w-full py-2 hover:text-primary"
-            >
+            <button onClick={() => scrollToSection("how-it-works")} className="block w-full py-2">
               Como funciona
             </button>
-            <button
-              onClick={() => scrollToSection("pricing")}
-              className="block w-full py-2 hover:text-primary"
-            >
+            <button onClick={() => scrollToSection("pricing")} className="block w-full py-2">
               Preço
             </button>
-            <button
-              onClick={() => scrollToSection("testimonials")}
-              className="block w-full py-2 hover:text-primary"
-            >
+            <button onClick={() => scrollToSection("testimonials")} className="block w-full py-2">
               Depoimentos
             </button>
-            <Button
-              onClick={() => scrollToSection("pricing")}
-              className="w-full"
-              variant="hero"
-            >
+            <Button onClick={() => scrollToSection("pricing")} className="w-full" variant="hero">
               Assinar agora
             </Button>
           </div>

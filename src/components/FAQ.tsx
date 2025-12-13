@@ -5,8 +5,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
+import { useMotionConfig } from "@/lib/motion-config";
 
 export default function FAQ() {
+  const motionCfg = useMotionConfig();
+
   const faqs = [
     {
       question: "Como funciona a I.A?",
@@ -36,17 +39,13 @@ export default function FAQ() {
   ];
 
   return (
-    <section id="faq" className="py-28 bg-gradient-to-b from-white via-purple-50/20 to-white">
+    <section
+      id="faq"
+      className="py-28 bg-gradient-to-b from-white via-purple-50/20 to-white"
+    >
       <div className="container mx-auto px-6 max-w-4xl">
-
-        {/* HEADER PREMIUM */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14 space-y-4"
-        >
+        {/* HEADER */}
+        <motion.div {...motionCfg} className="text-center mb-14 space-y-4">
           <div className="inline-flex items-center gap-3 rounded-full bg-purple-50 px-5 py-1.5 shadow-sm">
             <span className="text-xs tracking-[0.25em] text-purple-700 font-semibold uppercase">
               Dúvidas frequentes
@@ -63,6 +62,7 @@ export default function FAQ() {
           </p>
         </motion.div>
 
+        {/* ACCORDION */}
         <Accordion type="single" collapsible className="space-y-5">
           {faqs.map((faq, index) => (
             <AccordionItem

@@ -13,6 +13,8 @@ export default function Footer() {
               src={lucyLogo}
               alt="LucyFit"
               className="h-12 mb-4 drop-shadow-sm"
+              loading="lazy"
+              decoding="async"
             />
             <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
               Organize sua alimentação e treinos com inteligência artificial —{" "}
@@ -38,10 +40,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#testimonials"
-                  className="hover:text-purple-600 transition"
-                >
+                <a href="#testimonials" className="hover:text-purple-600 transition">
                   Depoimentos
                 </a>
               </li>

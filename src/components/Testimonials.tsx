@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Testimonials() {
+  const isMobile = useIsMobile();
+
   const testimonials = [
     {
       text: "Perdi 12kg em 3 meses! A I.A me ajudou a entender minha alimentação de verdade.",
@@ -41,68 +44,27 @@ export default function Testimonials() {
     },
   ];
 
-  const firstColumn = testimonials.slice(0, 2);
-  const secondColumn = testimonials.slice(2, 4);
-  const thirdColumn = testimonials.slice(4, 6);
-
   return (
-    <section
-      id="testimonials"
-      className="relative py-32 bg-gradient-to-b from-purple-50/40 to-white overflow-hidden"
-    >
-      <div className="container mx-auto max-w-7xl px-6 relative">
-
-        {/* FUNDO PRETO */}
-        <div className="relative flex justify-center mb-[-160px] z-10">
+    <section className="relative py-32 bg-gradient-to-b from-purple-50/40 to-white overflow-hidden">
+      <div className="container mx-auto max-w-7xl px-6">
+        {!isMobile && (
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="
-              w-full max-w-5xl
-              rounded-3xl
-              bg-black
-              px-10 pt-14 pb-40
-              text-center
-              shadow-2xl
-            "
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-              Não acredite somente em nós — veja quem já usa.
-            </h2>
-
-            <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
-              Junte-se a milhares de pessoas que transformaram sua alimentação.
-            </p>
+            <h2 className="text-4xl font-bold">Não acredite somente em nós</h2>
           </motion.div>
+        )}
+
+        <div className="flex justify-center gap-6 max-h-[520px] overflow-hidden">
+          <TestimonialsColumn testimonials={testimonials.slice(0, 2)} duration={16} />
+          {!isMobile && (
+            <TestimonialsColumn testimonials={testimonials.slice(2, 4)} duration={20} />
+          )}
         </div>
-
-        {/* CARROSSEL COM MÁSCARA (AQUI ESTÁ A CORREÇÃO) */}
-        <div
-          className="
-            relative z-20
-            flex justify-center gap-6
-            max-h-[520px] overflow-hidden
-            [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_55%,transparent)]
-            [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_25%,black_55%,transparent)]
-          "
-        >
-          <TestimonialsColumn testimonials={firstColumn} duration={16} />
-
-          <TestimonialsColumn
-            testimonials={secondColumn}
-            duration={20}
-            className="hidden md:block"
-          />
-
-          <TestimonialsColumn
-            testimonials={thirdColumn}
-            duration={18}
-            className="hidden lg:block"
-          />
-        </div>
-
       </div>
     </section>
   );
