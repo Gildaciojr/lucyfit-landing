@@ -1,7 +1,6 @@
 // src/components/Hero.tsx
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
 import heroVideo from "@/assets/gifs/meal-animation.webm";
 import lucyLogo from "@/assets/images/lucy-logo.png";
 import { Button } from "@/components/ui/button";
@@ -11,31 +10,18 @@ const Hero = () => {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
 
-  // 🔹 Renderiza o vídeo no mobile após idle (performance)
-  const [showVideo, setShowVideo] = useState(!isMobile);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const timeout = setTimeout(() => {
-      setShowVideo(true);
-    }, 800);
-
-    return () => clearTimeout(timeout);
-  }, [isMobile]);
-
   return (
     <section className="relative overflow-hidden pt-24 pb-28 bg-gradient-to-b from-white via-purple-50/40 to-white">
-      {/* MOBILE HOME BUTTON */}
+      {/* BOTÃO MOBILE */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Voltar ao topo"
         className="lg:hidden fixed top-4 left-4 z-[999] bg-white/90 backdrop-blur-md border border-purple-200 shadow-md px-3 py-2 rounded-xl"
-        aria-label="Voltar para o topo"
       >
         <img src={lucyLogo} className="h-6 w-auto" alt="LucyFit" />
       </button>
 
-      {/* BLOBS — DESKTOP ONLY */}
+      {/* BLOBS — DESKTOP */}
       {!isMobile && (
         <>
           <motion.div
@@ -62,8 +48,8 @@ const Hero = () => {
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-            A forma mais simples de organizar sua alimentação, treinos e
-            evolução é com a{" "}
+            A forma mais simples de organizar sua alimentação, treinos e evolução
+            é com a{" "}
             <span className="inline-flex items-center px-4 py-2 bg-white rounded-2xl shadow-md">
               <img src={lucyLogo} className="h-9" alt="LucyFit" />
             </span>
@@ -74,20 +60,18 @@ const Hero = () => {
             tecnologia de ponta direto no seu WhatsApp.
           </p>
 
-          {/* MOBILE VIDEO */}
-          {isMobile && showVideo && (
-            <div className="pt-4">
-              <div className="mx-auto max-w-md rounded-3xl bg-white border border-purple-200 shadow-xl overflow-hidden">
-                <video
-                  src={heroVideo}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="w-full object-cover"
-                />
-              </div>
+          {/* VIDEO — MOBILE (SEM CARD) */}
+          {isMobile && (
+            <div className="pt-6 flex justify-center">
+              <video
+                src={heroVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="w-full max-w-sm rounded-2xl"
+              />
             </div>
           )}
 
@@ -118,15 +102,15 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* DESKTOP VIDEO */}
+        {/* VIDEO — DESKTOP (COM CARD) */}
         {!isMobile && (
           <div className="hidden lg:flex justify-center">
             <div className="rounded-[32px] bg-white border border-purple-200 shadow-2xl overflow-hidden max-w-xl">
               <video
                 src={heroVideo}
                 autoPlay
-                muted
                 loop
+                muted
                 playsInline
                 preload="metadata"
                 className="w-full object-cover"

@@ -1,19 +1,20 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useMotionConfig } from "@/lib/motion-config";
 
 import chatTyping from "@/assets/gifs/chat-typing.gif";
 import heroChat from "@/assets/gifs/hero-chat.gif";
 import mealVideo from "@/assets/gifs/meal-animation.webm";
 
-/* ✅ TIPO EXPLÍCITO */
+/* ✅ TIPAGEM CORRETA */
+type FeatureMediaType = "image" | "video";
+
 type FeatureItem = {
   id: number;
   title: string;
   text: string;
   media: string;
-  type: "image" | "video";
+  type: FeatureMediaType;
 };
 
 const features: FeatureItem[] = [
@@ -47,7 +48,7 @@ function MediaRenderer({
   className,
 }: {
   src: string;
-  type: "image" | "video";
+  type: FeatureMediaType;
   alt: string;
   className?: string;
 }) {
@@ -56,8 +57,8 @@ function MediaRenderer({
       <video
         src={src}
         autoPlay
-        muted
         loop
+        muted
         playsInline
         preload="metadata"
         className={className}
@@ -81,29 +82,21 @@ function FeatureCard({
   index,
   activeIndex,
   setActiveIndex,
-  activatedRef,
 }: {
   item: FeatureItem;
   index: number;
   activeIndex: number;
   setActiveIndex: (i: number) => void;
-  activatedRef: React.MutableRefObject<Set<number>>;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
-
-  const isInView = useInView(ref, {
-    margin: "-30% 0px -30% 0px",
-  });
+  const isInView = useInView(ref, { margin: "-30% 0px -30% 0px" });
 
   useEffect(() => {
-    if (isMobile) return;
-
-    if (isInView && !activatedRef.current.has(index)) {
-      activatedRef.current.add(index);
+    if (!isMobile && isInView) {
       setActiveIndex(index);
     }
-  }, [isInView, isMobile, index, setActiveIndex, activatedRef]);
+  }, [isInView, isMobile, index, setActiveIndex]);
 
   const isActive = activeIndex === index;
 
@@ -111,7 +104,7 @@ function FeatureCard({
     <div
       ref={ref}
       onMouseEnter={() => !isMobile && setActiveIndex(index)}
-      className={`relative overflow-hidden rounded-2xl p-6 border transition-all ${
+      className={`rounded-2xl p-6 border transition-all ${
         isActive
           ? "bg-gradient-to-br from-white via-purple-50/60 to-white border-purple-300 shadow-xl"
           : "bg-white border-purple-100 shadow-md"
@@ -120,8 +113,7 @@ function FeatureCard({
       <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
       <p className="text-gray-600 text-sm leading-relaxed">{item.text}</p>
 
-      {/* MOBILE MEDIA */}
-      <div className="lg:hidden mt-5 rounded-xl overflow-hidden shadow">
+      <div className="mt-5 rounded-xl overflow-hidden shadow">
         <MediaRenderer
           src={item.media}
           type={item.type}
@@ -130,36 +122,26 @@ function FeatureCard({
         />
       </div>
 
-      {!isMobile && isActive && (
-        <div className="mt-5 h-1.5 w-full rounded-full bg-purple-100 overflow-hidden">
-          <div className="h-full w-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500" />
-        </div>
-      )}
+      {/* CTA */}
+      <a
+        href="#pricing"
+        className="inline-block mt-4 text-sm font-semibold text-purple-600 hover:text-purple-700"
+      >
+        Assine agora →
+      </a>
     </div>
   );
 }
 
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const isMobile = useIsMobile();
-  const motionCfg = useMotionConfig();
-  const activatedRef = useRef<Set<number>>(new Set());
 
   return (
     <section id="features" className="py-32 bg-white">
       <div className="container mx-auto px-6 max-w-7xl">
-        {isMobile ? (
-          <h2 className="text-4xl font-bold text-center mb-20">
-            Como a LucyFit te ajuda todos os dias
-          </h2>
-        ) : (
-          <motion.h2
-            {...motionCfg}
-            className="text-4xl md:text-5xl font-bold text-center mb-20"
-          >
-            Como a LucyFit te ajuda todos os dias
-          </motion.h2>
-        )}
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-20">
+          Como a LucyFit te ajuda todos os dias
+        </h2>
 
         <div className="grid lg:grid-cols-2 gap-20 items-start">
           <div className="space-y-10">
@@ -170,7 +152,6 @@ export default function Features() {
                 index={index}
                 activeIndex={activeIndex}
                 setActiveIndex={setActiveIndex}
-                activatedRef={activatedRef}
               />
             ))}
           </div>
@@ -178,19 +159,12 @@ export default function Features() {
           {/* DESKTOP MEDIA */}
           <div className="hidden lg:block sticky top-32">
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-purple-200 bg-purple-50/40">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0.4 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-              >
-                <MediaRenderer
-                  src={features[activeIndex].media}
-                  type={features[activeIndex].type}
-                  alt="LucyFit em ação"
-                  className="w-full object-cover max-h-[650px]"
-                />
-              </motion.div>
+              <MediaRenderer
+                src={features[activeIndex].media}
+                type={features[activeIndex].type}
+                alt="LucyFit em ação"
+                className="w-full object-cover max-h-[650px]"
+              />
             </div>
           </div>
         </div>
