@@ -12,7 +12,7 @@ const Hero = () => {
 
   return (
     <section className="relative overflow-hidden pt-24 pb-28 bg-gradient-to-b from-white via-purple-50/40 to-white">
-      {/* BOTÃO MOBILE */}
+      {/* ✅ LOGO FIXA NO MOBILE (HOME) — COMO ERA */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Voltar ao topo"
@@ -21,7 +21,7 @@ const Hero = () => {
         <img src={lucyLogo} className="h-6 w-auto" alt="LucyFit" />
       </button>
 
-      {/* BLOBS — DESKTOP */}
+      {/* BLOBS — DESKTOP ONLY */}
       {!isMobile && (
         <>
           <motion.div
@@ -60,18 +60,18 @@ const Hero = () => {
             tecnologia de ponta direto no seu WhatsApp.
           </p>
 
-          {/* GIF — MOBILE (SEM CARD) */}
-          {isMobile && (
-            <div className="pt-6 flex justify-center">
+          {/* ✅ MOBILE: MÍDIA SEM “CARD PESADO”, mas mantendo premium */}
+          <div className="lg:hidden pt-6">
+            <div className="mx-auto max-w-md overflow-hidden">
               <img
                 src={heroGif}
                 alt="LucyFit conversando no WhatsApp"
                 loading="lazy"
                 decoding="async"
-                className="w-full max-w-sm"
+                className="w-full object-cover rounded-2xl"
               />
             </div>
-          )}
+          </div>
 
           {/* CTA */}
           <div className="flex justify-center lg:justify-start pt-4">
@@ -83,7 +83,7 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* MÉTRICAS */}
+          {/* ✅ MÉTRICAS (mantidas) */}
           <div className="flex justify-center lg:justify-start gap-8 pt-6 text-sm text-gray-600">
             <div className="text-center">
               <strong className="block text-purple-600 text-lg">+2.000</strong>
@@ -100,16 +100,18 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* GIF — DESKTOP (SEM CARD) */}
+        {/* ✅ DESKTOP: PREMIUM COMO ERA (COM CARD) */}
         {!isMobile && (
           <div className="hidden lg:flex justify-center">
-            <img
-              src={heroGif}
-              alt="LucyFit conversando no WhatsApp"
-              loading="eager"
-              decoding="async"
-              className="w-full max-w-xl"
-            />
+            <div className="rounded-[32px] bg-white border border-purple-200 shadow-2xl overflow-hidden max-w-xl">
+              <img
+                src={heroGif}
+                alt="LucyFit conversando no WhatsApp"
+                loading="eager"
+                decoding="async"
+                className="w-full object-cover"
+              />
+            </div>
           </div>
         )}
       </div>
