@@ -28,26 +28,6 @@ const features = [
   },
 ];
 
-function MediaRenderer({
-  src,
-  alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      decoding="async"
-      className={className}
-    />
-  );
-}
-
 function FeatureCard({
   item,
   index,
@@ -62,7 +42,6 @@ function FeatureCard({
   const ref = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
 
-  // ✅ Hook SEMPRE chamado (evita erro de rules-of-hooks)
   const isInView = useInView(ref, { margin: "-30% 0px -30% 0px" });
 
   useEffect(() => {
@@ -77,7 +56,7 @@ function FeatureCard({
     <div
       ref={ref}
       onMouseEnter={() => !isMobile && setActiveIndex(index)}
-      className={`cursor-pointer relative overflow-hidden rounded-2xl p-6 border transition-all ${
+      className={`relative cursor-pointer rounded-2xl p-6 border transition-all ${
         isActive
           ? "bg-gradient-to-br from-white via-purple-50/60 to-white border-purple-300 shadow-xl"
           : "bg-white border-purple-100 shadow-md"
@@ -86,24 +65,18 @@ function FeatureCard({
       <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
       <p className="text-gray-600 text-sm leading-relaxed">{item.text}</p>
 
-      {/* ✅ MOBILE: “smartphone” SEM card pesado por trás (mais leve visualmente)
-          ✅ DESKTOP: mantém o cardzinho premium como era
-      */}
-      <div
-        className={`mt-5 overflow-hidden ${
-          isMobile
-            ? "flex justify-center"
-            : "rounded-xl shadow border border-purple-100 bg-purple-50/30"
-        }`}
-      >
-        <MediaRenderer
-          src={item.media}
-          alt={item.title}
-          className={isMobile ? "w-full max-w-[260px]" : "w-full object-cover"}
-        />
-      </div>
+      {/* MOBILE: smartphone leve, sem fundo pesado */}
+      {isMobile && (
+        <div className="mt-5 flex justify-center">
+          <img
+            src={item.media}
+            alt={item.title}
+            loading="lazy"
+            className="w-full max-w-[260px]"
+          />
+        </div>
+      )}
 
-      {/* ✅ CTA por card (como você pediu) */}
       <a
         href="#pricing"
         className="inline-block mt-4 text-sm font-semibold text-purple-600 hover:text-purple-700"
@@ -111,10 +84,10 @@ function FeatureCard({
         Assine agora →
       </a>
 
-      {/* ✅ Barra premium (DESKTOP) como era */}
+      {/* BARRA PREMIUM — DESKTOP */}
       {!isMobile && isActive && (
         <div className="mt-5 h-1.5 w-full rounded-full bg-purple-100 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 w-full" />
+          <div className="h-full w-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500" />
         </div>
       )}
     </div>
@@ -129,9 +102,8 @@ export default function Features() {
   return (
     <section id="features" className="py-32 bg-white">
       <div className="container mx-auto px-6 max-w-7xl">
-        {/* ✅ TÍTULO SEMPRE VISÍVEL NO MOBILE (não some mais) */}
         {isMobile ? (
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-20">
+          <h2 className="text-4xl font-bold text-center mb-20">
             Como a LucyFit te ajuda todos os dias
           </h2>
         ) : (
@@ -156,23 +128,22 @@ export default function Features() {
             ))}
           </div>
 
-          {/* ✅ DESKTOP: sticky premium como era */}
-          <div className="hidden lg:block sticky top-32">
-            <div className="rounded-3xl overflow-hidden shadow-2xl border border-purple-200 bg-purple-50/40">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0.4 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-              >
-                <MediaRenderer
+          {/* DESKTOP — sticky premium (SEM duplicação) */}
+          {!isMobile && (
+            <div className="sticky top-32">
+              <div className="rounded-3xl overflow-hidden shadow-2xl border border-purple-200 bg-purple-50/40">
+                <motion.img
+                  key={activeIndex}
                   src={features[activeIndex].media}
                   alt="LucyFit em ação"
                   className="w-full object-cover max-h-[650px]"
+                  initial={{ opacity: 0.4 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
                 />
-              </motion.div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
