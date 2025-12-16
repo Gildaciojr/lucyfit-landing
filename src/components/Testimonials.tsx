@@ -1,7 +1,7 @@
 // src/components/Testimonials.tsx
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 import depo1 from "@/assets/videos/depoimentolucy1.mp4";
@@ -43,76 +43,81 @@ export default function Testimonials() {
             className="w-full max-w-5xl rounded-3xl bg-black px-10 pt-14 pb-20 text-center shadow-2xl"
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-              Não acredite somente em nós — veja o que nossos usuários dizem sobre nós.
+              Não acredite somente em nós — veja quem já usa.
             </h2>
 
             <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
-              Pessoas reais, resultados reais, experiências reais.
+              Junte-se a milhares de pessoas que transformaram sua alimentação.
             </p>
           </motion.div>
         </div>
 
-        {/* ================= DESKTOP ================= */}
-        {!isMobile && (
-          <div className="relative flex justify-center items-center h-[520px] mt-16">
-            <VideoCard src={videos[left]} position="left" />
-            <VideoCard src={videos[active]} active />
-            <VideoCard src={videos[right]} position="right" />
+        {/* SLIDER UNIFICADO (DESKTOP + MOBILE) */}
+        <div className="relative flex justify-center items-center h-[480px] mt-16">
+          <VideoCard
+            src={videos[left]}
+            position="left"
+            isMobile={isMobile}
+          />
 
-            <button
-              onClick={prev}
-              className="absolute left-4 md:left-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
-            >
-              <ChevronLeft />
-            </button>
+          <VideoCard
+            src={videos[active]}
+            active
+            isMobile={isMobile}
+          />
 
-            <button
-              onClick={next}
-              className="absolute right-4 md:right-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
-            >
-              <ChevronRight />
-            </button>
-          </div>
-        )}
+          <VideoCard
+            src={videos[right]}
+            position="right"
+            isMobile={isMobile}
+          />
 
-        {/* ================= MOBILE ================= */}
-        {isMobile && (
-          <div className="flex gap-6 overflow-x-auto px-2 snap-x snap-mandatory">
-            {videos.map((src, i) => (
-              <div
-                key={i}
-                className="snap-center shrink-0 w-[260px]"
+          {!isMobile && (
+            <>
+              <button
+                onClick={prev}
+                className="absolute left-4 md:left-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
               >
-                <MobileVideoCard src={src} />
-              </div>
-            ))}
-          </div>
-        )}
+                <ChevronLeft />
+              </button>
+
+              <button
+                onClick={next}
+                className="absolute right-4 md:right-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
+              >
+                <ChevronRight />
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </section>
   );
 }
 
-/* ================= DESKTOP CARD ================= */
+/* ================= CARD ================= */
 
 function VideoCard({
   src,
   active = false,
   position,
+  isMobile,
 }: {
   src: string;
   active?: boolean;
   position?: "left" | "right";
+  isMobile: boolean;
 }) {
   const base =
     "absolute rounded-3xl overflow-hidden bg-black shadow-2xl transition-all duration-500";
 
+  const offset = isMobile ? 180 : 320;
+  const scaleSide = isMobile ? "scale-[0.85]" : "scale-90";
+
   const variants = {
     center: "z-20 scale-100 opacity-100",
-    left:
-      "z-10 scale-90 -translate-x-[320px] opacity-40 blur-[1px]",
-    right:
-      "z-10 scale-90 translate-x-[320px] opacity-40 blur-[1px]",
+    left: `z-10 ${scaleSide} -translate-x-[${offset}px] opacity-40 blur-[1px]`,
+    right: `z-10 ${scaleSide} translate-x-[${offset}px] opacity-40 blur-[1px]`,
   };
 
   const cls = active
@@ -122,42 +127,22 @@ function VideoCard({
     : variants.right;
 
   return (
-    <div className={`${base} ${cls} w-[260px] h-[440px]`}>
-      <video
-        src={src}
-        muted
-        playsInline
-        preload="metadata"
-        autoPlay={active}
-        loop={active}
-        className="w-full h-full object-cover"
-      />
-
-      <Stars />
-    </div>
-  );
-}
-
-/* ================= MOBILE CARD ================= */
-
-function MobileVideoCard({ src }: { src: string }) {
-  return (
-    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black">
+    <div
+      className={`${base} ${cls}`}
+      style={{
+        width: isMobile ? 240 : 260,
+        height: isMobile ? 420 : 440,
+      }}
+    >
       <video
         src={src}
         controls
         preload="metadata"
         poster={src}
-        className="w-full h-[440px] object-cover"
+        className="w-full h-full object-cover"
       />
 
       <Stars />
-
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="bg-black/50 rounded-full p-4">
-          <Play className="text-white w-8 h-8" />
-        </div>
-      </div>
     </div>
   );
 }

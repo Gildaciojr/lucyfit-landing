@@ -87,16 +87,16 @@ const Hero = () => {
           {/* MÉTRICAS */}
           <div className="flex justify-center lg:justify-start gap-8 pt-6 text-sm text-gray-600">
             <div className="text-center">
-              <strong className="block text-purple-600 text-lg">+2.000</strong>
-              pessoas já usaram
+              <strong className="block text-purple-600 text-lg">+50.mil</strong>
+              alimentos registrados
             </div>
             <div className="text-center">
-              <strong className="block text-purple-600 text-lg">+50 mil</strong>
+              <strong className="block text-purple-600 text-lg">+10 mil</strong>
               usuários ativos
             </div>
             <div className="text-center">
-              <strong className="block text-purple-600 text-lg">+200kg</strong>
-              eliminados
+              <strong className="block text-purple-600 text-lg">+1.500kg</strong>
+              perdidos
             </div>
           </div>
         </div>
