@@ -1,7 +1,7 @@
 // src/components/Testimonials.tsx
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Play } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 import depo1 from "@/assets/videos/depoimentolucy1.mp4";
@@ -26,17 +26,21 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative py-40 bg-gradient-to-b from-purple-50/40 to-white overflow-hidden"
+      className="relative py-32 bg-gradient-to-b from-purple-50/40 to-white overflow-hidden"
     >
       <div className="container mx-auto max-w-7xl px-6 relative">
         {/* CARD PRETO */}
-        <div className="relative flex justify-center z-10 mb-[-140px]">
+        <div
+          className={`relative flex justify-center z-10 ${
+            isMobile ? "mb-12" : "mb-[-140px]"
+          }`}
+        >
           <motion.div
             initial={isMobile ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-5xl rounded-3xl bg-black px-10 pt-14 pb-32 text-center shadow-2xl"
+            className="w-full max-w-5xl rounded-3xl bg-black px-10 pt-14 pb-20 text-center shadow-2xl"
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
               Não acredite somente em nós — veja o que nossos usuários dizem sobre nós.
@@ -48,51 +52,48 @@ export default function Testimonials() {
           </motion.div>
         </div>
 
-        {/* CONTAINER DOS VÍDEOS */}
-        <div className="relative flex justify-center items-center h-[520px] mt-16">
-          {/* ESQUERDA */}
-          {!isMobile && (
-            <VideoCard
-              src={videos[left]}
-              position="left"
-            />
-          )}
+        {/* ================= DESKTOP ================= */}
+        {!isMobile && (
+          <div className="relative flex justify-center items-center h-[520px] mt-16">
+            <VideoCard src={videos[left]} position="left" />
+            <VideoCard src={videos[active]} active />
+            <VideoCard src={videos[right]} position="right" />
 
-          {/* CENTRO */}
-          <VideoCard
-            src={videos[active]}
-            active
-          />
+            <button
+              onClick={prev}
+              className="absolute left-4 md:left-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
+            >
+              <ChevronLeft />
+            </button>
 
-          {/* DIREITA */}
-          {!isMobile && (
-            <VideoCard
-              src={videos[right]}
-              position="right"
-            />
-          )}
+            <button
+              onClick={next}
+              className="absolute right-4 md:right-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
+            >
+              <ChevronRight />
+            </button>
+          </div>
+        )}
 
-          {/* CONTROLES */}
-          <button
-            onClick={prev}
-            className="absolute left-4 md:left-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
-          >
-            <ChevronLeft />
-          </button>
-
-          <button
-            onClick={next}
-            className="absolute right-4 md:right-16 z-30 p-3 rounded-full bg-white/90 shadow-md hover:bg-white transition"
-          >
-            <ChevronRight />
-          </button>
-        </div>
+        {/* ================= MOBILE ================= */}
+        {isMobile && (
+          <div className="flex gap-6 overflow-x-auto px-2 snap-x snap-mandatory">
+            {videos.map((src, i) => (
+              <div
+                key={i}
+                className="snap-center shrink-0 w-[260px]"
+              >
+                <MobileVideoCard src={src} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-/* ===================== VIDEO CARD ===================== */
+/* ================= DESKTOP CARD ================= */
 
 function VideoCard({
   src,
@@ -132,16 +133,47 @@ function VideoCard({
         className="w-full h-full object-cover"
       />
 
-      {/* ESTRELAS */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            size={16}
-            className="fill-yellow-400 text-yellow-400"
-          />
-        ))}
+      <Stars />
+    </div>
+  );
+}
+
+/* ================= MOBILE CARD ================= */
+
+function MobileVideoCard({ src }: { src: string }) {
+  return (
+    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black">
+      <video
+        src={src}
+        controls
+        preload="metadata"
+        poster={src}
+        className="w-full h-[440px] object-cover"
+      />
+
+      <Stars />
+
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="bg-black/50 rounded-full p-4">
+          <Play className="text-white w-8 h-8" />
+        </div>
       </div>
+    </div>
+  );
+}
+
+/* ================= STARS ================= */
+
+function Stars() {
+  return (
+    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          size={16}
+          className="fill-yellow-400 text-yellow-400"
+        />
+      ))}
     </div>
   );
 }
