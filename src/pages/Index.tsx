@@ -1,6 +1,7 @@
 // src/pages/Index.tsx
 
 import Hero from "@/components/Hero";
+import Guarantee from "@/components/Guarantee";
 import Features from "@/components/Features";
 import MoreFeatures from "@/components/MoreFeatures";
 import Testimonials from "@/components/Testimonials";
@@ -13,6 +14,9 @@ export default function Index() {
     <main className="bg-background text-foreground overflow-x-hidden">
       {/* HERO */}
       <Hero />
+
+      {/* Guarantee */}
+      <Guarantee />
 
       {/* COMO A LUCY AJUDA */}
       <Features />
