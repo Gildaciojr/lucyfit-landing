@@ -43,11 +43,11 @@ export default function Testimonials() {
             className="w-full max-w-5xl rounded-3xl bg-black px-10 pt-14 pb-28 text-center shadow-2xl"
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-              Não acredite somente em nós — veja o que nossos usuários dizem sobre nós.
+              Não acredite somente em nós — veja quem já usa.
             </h2>
 
             <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
-              Pessoas reais, resultados reais, experiências reais.
+              Junte-se a milhares de pessoas que transformaram sua alimentação.
             </p>
           </motion.div>
         </div>
