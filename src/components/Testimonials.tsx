@@ -73,7 +73,13 @@ export default function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-5xl rounded-3xl bg-black px-10 pt-14 pb-24 text-center shadow-2xl"
+            className="
+              relative w-full max-w-5xl rounded-3xl bg-black
+              px-6 md:px-10
+              pt-12 md:pt-14
+              pb-20 lg:pb-36
+              text-center shadow-2xl
+            "
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
               Não acredite somente em nós — veja quem já usa.
@@ -82,12 +88,15 @@ export default function Testimonials() {
             <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
               Junte-se a milhares de pessoas que transformaram sua alimentação.
             </p>
+
+            {/* FADE INFERIOR — MOBILE ONLY */}
+            <div className="absolute bottom-0 left-0 right-0 h-16 md:hidden pointer-events-none bg-gradient-to-b from-black to-transparent" />
           </motion.div>
         </div>
 
         {/* COMMENTS — DESKTOP */}
         {!isMobile && (
-          <div className="relative z-1 pt-20">
+          <div className="relative z-10 pt-20">
             <DesktopCascadeComments comments={comments} />
           </div>
         )}
@@ -101,11 +110,21 @@ export default function Testimonials() {
           <VideoCard data={videos[active]} pos="center" isMobile={isMobile} />
           <VideoCard data={videos[right]} pos="right" isMobile={isMobile} onClick={() => setActive(right)} />
 
-          <button onClick={prev} className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${isMobile ? "left-2 p-2" : "left-6 md:left-16 p-3"}`}>
+          <button
+            onClick={prev}
+            className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${
+              isMobile ? "left-2 p-2" : "left-6 md:left-16 p-3"
+            }`}
+          >
             <ChevronLeft />
           </button>
 
-          <button onClick={next} className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${isMobile ? "right-2 p-2" : "right-6 md:right-16 p-3"}`}>
+          <button
+            onClick={next}
+            className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${
+              isMobile ? "right-2 p-2" : "right-6 md:right-16 p-3"
+            }`}
+          >
             <ChevronRight />
           </button>
         </div>
@@ -122,7 +141,6 @@ function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
   return (
     <div className="relative pointer-events-none">
       <div className="relative mx-auto max-w-6xl h-[220px] overflow-hidden">
-        {/* Fade inferior — integrado ao fundo */}
         <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
 
         <div className="lucy-comment-stream-horizontal animate-lucyCommentStreamHorizontal items-center">
@@ -154,31 +172,20 @@ function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
 
 function CommentCard({ c }: { c: Comment }) {
   return (
-    <div className="w-[420px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.35)] p-5 flex flex-col justify-between">
-      
-      {/* TEXTO */}
+    <div className="w-[420px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.35)] p-5">
       <p className="text-white/90 text-sm leading-relaxed line-clamp-4">
         “{c.quote}”
       </p>
 
-      {/* FOOTER */}
       <div className="mt-4 flex items-center justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-white font-semibold text-sm truncate">
-            {c.name}
-          </p>
-          <p className="text-white/60 text-xs truncate">
-            {c.role}
-          </p>
+          <p className="text-white font-semibold text-sm truncate">{c.name}</p>
+          <p className="text-white/60 text-xs truncate">{c.role}</p>
         </div>
 
         <div className="flex shrink-0 gap-0.5">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              size={13}
-              className="fill-yellow-400 text-yellow-400"
-            />
+            <Star key={i} size={13} className="fill-yellow-400 text-yellow-400" />
           ))}
         </div>
       </div>
@@ -186,12 +193,11 @@ function CommentCard({ c }: { c: Comment }) {
   );
 }
 
-
 /* ================= COMMENTS (MOBILE) ================= */
 
 function MobileComments({ comments }: { comments: Comment[] }) {
   return (
-    <div className="relative z-10 -mt-2 mb-4">
+    <div className="relative z-10 -mt-10 mb-6">
       <div className="flex gap-4 overflow-x-auto pb-2 px-1 snap-x snap-mandatory scrollbar-hide">
         {comments.map((c, idx) => (
           <div
