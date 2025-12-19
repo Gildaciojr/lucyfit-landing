@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -74,12 +74,13 @@ const COMMENTS: Comment[] = [
 export default function Testimonials() {
   const isMobile = useIsMobile();
 
+  // TROCA INICIAL — PRIMEIRO VÍDEO SERÁ O depo4
   const videos = useMemo(
     () => [
+      { src: depo4, person: PEOPLE[3] },
       { src: depo1, person: PEOPLE[0] },
       { src: depo2, person: PEOPLE[1] },
       { src: depo3, person: PEOPLE[2] },
-      { src: depo4, person: PEOPLE[3] },
       { src: depo5, person: PEOPLE[4] },
     ],
     [],
@@ -88,10 +89,8 @@ export default function Testimonials() {
   const comments = useMemo(() => COMMENTS, []);
   const [active, setActive] = useState(0);
 
-  const prev = () =>
-    setActive((i) => (i === 0 ? videos.length - 1 : i - 1));
-  const next = () =>
-    setActive((i) => (i === videos.length - 1 ? 0 : i + 1));
+  const prev = () => setActive((i) => (i === 0 ? videos.length - 1 : i - 1));
+  const next = () => setActive((i) => (i === videos.length - 1 ? 0 : i + 1));
 
   const left = (active - 1 + videos.length) % videos.length;
   const right = (active + 1) % videos.length;
@@ -99,11 +98,22 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative pt-14 lg:pt-24 pb-24 lg:pb-32 bg-gradient-to-b from-purple-50/30 via-neutral-900 to-black overflow-hidden"
+      className="
+        relative 
+        pt-14 lg:pt-24 
+        pb-24 lg:pb-32 
+        bg-gradient-to-b 
+        from-purple-50/30 
+        via-neutral-900 
+        to-black 
+        overflow-hidden
+      "
     >
       <div className="container mx-auto max-w-7xl px-6 relative">
-        {/* CARD PRETO — TÍTULO */}
-        <div className="relative flex justify-center z-30 mb-[-32px] lg:mb-[-48px]">
+
+
+        {/* ===================== CARD PRETO — SEM ALTERAÇÃO ===================== */}
+        <div className="relative flex justify-center z-30 mb-[-12px] lg:mb-[-48px]">
           <motion.div
             initial={isMobile ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -124,47 +134,32 @@ export default function Testimonials() {
             <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
               Junte-se a milhares de pessoas que transformaram sua alimentação.
             </p>
-
-            {/* FADE INFERIOR — MOBILE */}
-            <div
-              className="
-                absolute bottom-0 left-0 right-0
-                h-16 md:hidden pointer-events-none
-                bg-gradient-to-b from-black/70 via-black/40 to-transparent
-              "
-            />
           </motion.div>
         </div>
 
-        {/* COMMENTS — DESKTOP */}
+
+        {/* ===================== MOBILE — COMENTÁRIOS AJUSTADOS ===================== */}
+        {isMobile && (
+          <div className="relative z-30 -mt-4 mb-3 overflow-hidden">
+            <MobileComments comments={comments} />
+          </div>
+        )}
+
+
+        {/* ===================== DESKTOP COMENTÁRIOS (INTACTO) ===================== */}
         {!isMobile && (
           <div className="relative z-10 pt-20">
             <DesktopCascadeComments comments={comments} />
           </div>
         )}
 
-        {/* COMMENTS — MOBILE (FAIXA AUTOMÁTICA) */}
-        {isMobile && <MobileComments comments={comments} />}
 
-        {/* VÍDEOS */}
-        <div className="relative mt-6 flex justify-center items-center h-[520px] z-10">
-          <VideoCard
-            data={videos[left]}
-            pos="left"
-            isMobile={isMobile}
-            onClick={() => setActive(left)}
-          />
-          <VideoCard
-            data={videos[active]}
-            pos="center"
-            isMobile={isMobile}
-          />
-          <VideoCard
-            data={videos[right]}
-            pos="right"
-            isMobile={isMobile}
-            onClick={() => setActive(right)}
-          />
+
+        {/* ===================== VÍDEOS ===================== */}
+        <div className="relative mt-10 flex justify-center items-center h-[520px] z-10">
+          <VideoCard data={videos[left]} pos="left" isMobile={isMobile} onClick={() => setActive(left)} />
+          <VideoCard data={videos[active]} pos="center" isMobile={isMobile} />
+          <VideoCard data={videos[right]} pos="right" isMobile={isMobile} onClick={() => setActive(right)} />
 
           <button
             onClick={prev}
@@ -189,77 +184,17 @@ export default function Testimonials() {
   );
 }
 
-/* ================= COMMENTS (DESKTOP) ================= */
 
-function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
-  const loop = useMemo(() => [...comments, ...comments], [comments]);
-
-  return (
-    <div className="relative pointer-events-none">
-      <div className="relative mx-auto max-w-6xl h-[220px] overflow-hidden">
-        {/* fade inferior para integrar com o fundo */}
-        <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
-
-        <div className="lucy-comment-stream-horizontal animate-lucyCommentStreamHorizontal items-center">
-          {loop.map((c, idx) => (
-            <CommentCard key={idx} c={c} />
-          ))}
-        </div>
-
-        <style>{`
-          .lucy-comment-stream-horizontal {
-            display: flex;
-            gap: 28px;
-            will-change: transform;
-          }
-
-          @keyframes lucyCommentStreamHorizontal {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-
-          .animate-lucyCommentStreamHorizontal {
-            animation: lucyCommentStreamHorizontal 36s linear infinite;
-          }
-        `}</style>
-      </div>
-    </div>
-  );
-}
-
-function CommentCard({ c }: { c: Comment }) {
-  return (
-    <div className="w-[420px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.35)] p-5">
-      <p className="text-white/90 text-sm leading-relaxed line-clamp-4">
-        “{c.quote}”
-      </p>
-
-      <div className="mt-4 flex items-center justify-between gap-4">
-        <div className="min-w-0">
-          <p className="text-white font-semibold text-sm truncate">
-            {c.name}
-          </p>
-          <p className="text-white/60 text-xs truncate">{c.role}</p>
-        </div>
-
-        <div className="flex shrink-0 gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} size={13} className="fill-yellow-400 text-yellow-400" />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ================= COMMENTS (MOBILE — AUTO) ================= */
+/* ======================================================================= */
+/* MOBILE COMMENTS — ALINHADAS E BAIXADAS                                 */
+/* ======================================================================= */
 
 function MobileComments({ comments }: { comments: Comment[] }) {
   const loop = [...comments, ...comments];
 
   return (
-    <div className="relative z-30 -mt-2 mb-6 overflow-hidden">
-      {/* faixa de comentários */}
+    <div className="relative z-30 overflow-hidden mt-2 mb-2">
+
       <div className="mobile-comment-stream animate-mobileCommentStream">
         {loop.map((c, idx) => (
           <div
@@ -290,12 +225,12 @@ function MobileComments({ comments }: { comments: Comment[] }) {
         ))}
       </div>
 
-      {/* gradiente lateral para esconder o fim da faixa */}
-      <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-neutral-800 via-neutral-900/60 to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-neutral-800 via-neutral-900/60 to-transparent pointer-events-none" />
 
-      {/* leve fade inferior para tirar a “linha” da base */}
-      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-neutral-800 via-neutral-900/60 to-transparent pointer-events-none" />
+      {/* REMOVE CAIXA VISÍVEL — BORDAS LATERAIS E INFERIOR RESPONSIVAS */}
+      <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-neutral-900 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-neutral-900 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-neutral-900 to-transparent pointer-events-none" />
+
 
       <style>{`
         .mobile-comment-stream {
@@ -311,14 +246,86 @@ function MobileComments({ comments }: { comments: Comment[] }) {
         }
 
         .animate-mobileCommentStream {
-          animation: mobileCommentStream 25s linear infinite;
+          animation: mobileCommentStream 23s linear infinite;
         }
       `}</style>
     </div>
   );
 }
 
-/* ================= VIDEO CARD ================= */
+
+
+/* ======================================================================= */
+/* DESKTOP — NÃO ALTERADO                                                 */
+/* ======================================================================= */
+
+function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
+  const loop = useMemo(() => [...comments, ...comments], [comments]);
+
+  return (
+    <div className="relative pointer-events-none">
+      <div className="relative mx-auto max-w-6xl h-[220px] overflow-hidden">
+
+        <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
+
+        <div className="lucy-comment-stream-horizontal animate-lucyCommentStreamHorizontal items-center">
+          {loop.map((c, idx) => (
+            <CommentCard key={idx} c={c} />
+          ))}
+        </div>
+
+        <style>{`
+          .lucy-comment-stream-horizontal {
+            display: flex;
+            gap: 28px;
+            will-change: transform;
+          }
+
+          @keyframes lucyCommentStreamHorizontal {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+
+          .animate-lucyCommentStreamHorizontal {
+            animation: lucyCommentStreamHorizontal 36s linear infinite;
+          }
+        `}</style>
+      </div>
+    </div>
+  );
+}
+
+
+function CommentCard({ c }: { c: Comment }) {
+  return (
+    <div className="w-[420px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.35)] p-5">
+      <p className="text-white/90 text-sm leading-relaxed line-clamp-4">
+        “{c.quote}”
+      </p>
+
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-white font-semibold text-sm truncate">
+            {c.name}
+          </p>
+          <p className="text-white/60 text-xs truncate">{c.role}</p>
+        </div>
+
+        <div className="flex shrink-0 gap-0.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star key={i} size={13} className="fill-yellow-400 text-yellow-400" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+/* ======================================================================= */
+/* VIDEO CARD — MOBILE AJUSTADO PARA NÃO AUTOPLAY                         */
+/* ======================================================================= */
 
 function VideoCard({
   data,
@@ -333,42 +340,35 @@ function VideoCard({
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const W = isMobile ? 240 : 270;
-  const H = isMobile ? 420 : 460;
+  const width = isMobile ? 240 : 270;
+  const height = isMobile ? 420 : 460;
   const offset = isMobile ? 150 : 320;
 
   const styles = {
     center: { transform: "translateX(0) scale(1)", zIndex: 20, opacity: 1 },
-    left: {
-      transform: `translateX(-${offset}px) scale(0.9)`,
-      zIndex: 10,
-      opacity: 0.45,
-    },
-    right: {
-      transform: `translateX(${offset}px) scale(0.9)`,
-      zIndex: 10,
-      opacity: 0.45,
-    },
+    left: { transform: `translateX(-${offset}px) scale(0.9)`, zIndex: 10, opacity: 1 },
+    right: { transform: `translateX(${offset}px) scale(0.9)`, zIndex: 10, opacity: 1 },
   } as const;
 
-  const isCenter = pos === "center";
+  const [playing, setPlaying] = useState(false);
 
   const handleClick = () => {
-    // se não é o card central, navega no carrossel
-    if (!isCenter && onClick) {
+    if (pos !== "center" && onClick) {
       onClick();
       return;
     }
 
-    // se é o card central, controla play/pause + som
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.muted = false; // libera som após interação
-        void videoRef.current.play();
-      } else {
-        videoRef.current.pause();
-      }
+    if (!videoRef.current) return;
+
+    if (!playing) {
+      videoRef.current.muted = false;
+      videoRef.current.play();
+      setPlaying(true);
+      return;
     }
+
+    videoRef.current.pause();
+    setPlaying(false);
   };
 
   return (
@@ -379,18 +379,32 @@ function VideoCard({
     >
       <div
         className="rounded-3xl overflow-hidden shadow-2xl"
-        style={{ width: W, height: H }}
+        style={{ width, height }}
       >
         <video
           ref={videoRef}
           src={data.src}
-          autoPlay={isCenter}
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          muted={false}
+          poster={data.src}
           className="w-full h-full object-cover"
         />
       </div>
+
+      {pos === "center" && (
+        <button
+          className="
+            absolute top-1/2 left-1/2 
+            -translate-x-1/2 -translate-y-1/2
+            bg-black/60 text-white
+            rounded-full p-5
+          "
+        >
+          {playing ? "❚❚" : "▶"}
+        </button>
+      )}
 
       <div className="mt-4 text-center space-y-1">
         <p className="text-sm font-semibold text-white">
