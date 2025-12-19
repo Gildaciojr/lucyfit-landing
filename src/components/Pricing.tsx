@@ -11,8 +11,14 @@ const monthlyBase = {
   description: "Controle total da sua alimentação com IA pagando mês a mês.",
   features: [
     { name: "Registro de refeições por foto, texto ou áudio", included: true },
-    { name: "Cálculo automático de calorias e macronutrientes", included: true },
-    { name: "Sugestões de treino e exercícios para sua rotina", included: true },
+    {
+      name: "Cálculo automático de calorias e macronutrientes",
+      included: true,
+    },
+    {
+      name: "Sugestões de treino e exercícios para sua rotina",
+      included: true,
+    },
     { name: "Análise inteligente da sua alimentação com IA", included: true },
     { name: "Metas ajustadas conforme seus hábitos", included: true },
     { name: "Histórico de refeições e treinos no WhatsApp", included: true },
@@ -32,8 +38,14 @@ const annualBase = {
   description: "12x R$ 19,99 — Economize mais de 30%",
   features: [
     { name: "Registro de refeições por foto, texto ou áudio", included: true },
-    { name: "Cálculo automático de calorias e macronutrientes", included: true },
-    { name: "Sugestões de treino e exercícios para sua rotina", included: true },
+    {
+      name: "Cálculo automático de calorias e macronutrientes",
+      included: true,
+    },
+    {
+      name: "Sugestões de treino e exercícios para sua rotina",
+      included: true,
+    },
     { name: "Análise inteligente da sua alimentação com IA", included: true },
     { name: "Metas ajustadas conforme seus hábitos", included: true },
     { name: "Histórico de refeições e treinos no WhatsApp", included: true },
@@ -47,7 +59,6 @@ const annualBase = {
 };
 
 export default function Pricing() {
-
   const isMobile = useIsMobile();
 
   return (
@@ -57,7 +68,6 @@ export default function Pricing() {
       autoCorrect="off"
       spellCheck={false}
     >
-
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold">
           Invista na sua saúde por menos que um lanche.
@@ -66,7 +76,6 @@ export default function Pricing() {
           Escolha o plano ideal para você
         </p>
       </div>
-
 
       {/* GRID */}
       <div
@@ -80,8 +89,6 @@ export default function Pricing() {
           px-6
         "
       >
-
-
         {/* 🟥 CARD MENSAL — ESQUERDA */}
         <motion.div
           initial={isMobile ? false : { opacity: 0, y: 60, scale: 0.96 }}
@@ -95,12 +102,18 @@ export default function Pricing() {
             text-gray-900
             p-10
 
-            ${!isMobile && "bg-gradient-to-br from-gray-200 via-gray-100 to-white shadow-[0_0_60px_rgba(0,0,0,0.15)]"}
+            ${
+              !isMobile &&
+              "bg-gradient-to-br from-gray-200 via-gray-100 to-white shadow-[0_0_60px_rgba(0,0,0,0.15)]"
+            }
             ${isMobile && "bg-gray-100"}
           `}
         >
-
-          <h3 className="text-3xl font-bold">{monthlyBase.name}</h3>
+          <h3 className="text-3xl font-bold">
+            <span spellCheck={false} autoCorrect="off">
+              {monthlyBase.name}
+            </span>
+          </h3>
           <p className="mt-3 text-lg opacity-90">{monthlyBase.description}</p>
 
           <div className="mt-6 flex items-end gap-2">
@@ -112,21 +125,14 @@ export default function Pricing() {
 
           <ul className="mt-8 space-y-3">
             {monthlyBase.features.map((f, idx) => (
-              <li
-                key={idx}
-                className="flex gap-3 items-start"
-              >
+              <li key={idx} className="flex gap-3 items-start">
                 <span
                   className={`
                     mt-1
                     w-3
                     h-3
                     rounded-full
-                    ${
-                      f.included
-                        ? "bg-purple-500"
-                        : "bg-red-400"
-                    }
+                    ${f.included ? "bg-purple-500" : "bg-red-400"}
                   `}
                 />
                 <span>{f.name}</span>
@@ -154,10 +160,7 @@ export default function Pricing() {
           >
             {monthlyBase.cta.text}
           </a>
-
         </motion.div>
-
-
 
         {/* 🟪 CARD ANUAL — DIREITA */}
         <motion.div
@@ -179,7 +182,6 @@ export default function Pricing() {
             ${!isMobile && "shadow-[0_0_90px_rgba(130,60,255,0.45)]"}
           `}
         >
-
           <div className="absolute -top-4 left-1/2 -translate-x-1/2">
             <div className="px-4 py-1 bg-yellow-400 text-gray-900 font-bold rounded-full shadow-md flex items-center gap-2">
               <Star className="h-4 w-4" />
@@ -235,12 +237,8 @@ export default function Pricing() {
           >
             {annualBase.cta.text}
           </a>
-
         </motion.div>
-
       </div>
-
-
 
       {/* GARANTIA */}
       <div className="mt-16 flex justify-center px-6">
@@ -254,7 +252,6 @@ export default function Pricing() {
         </div>
       </div>
 
-
       {/* CANCELAMENTO */}
       <div className="mt-6 flex justify-center">
         <div className="flex items-center gap-2 text-gray-600 text-sm font-medium">
@@ -262,7 +259,6 @@ export default function Pricing() {
           <span>Cancele quando quiser.</span>
         </div>
       </div>
-
     </section>
   );
 }
