@@ -110,9 +110,7 @@ export default function Testimonials() {
       "
     >
       <div className="container mx-auto max-w-7xl px-6 relative">
-
-
-        {/* ===================== CARD PRETO — SEM ALTERAÇÃO ===================== */}
+        {/* CARD PRETO — TÍTULO */}
         <div className="relative flex justify-center z-30 mb-[-12px] lg:mb-[-48px]">
           <motion.div
             initial={isMobile ? false : { opacity: 0, y: 24 }}
@@ -137,29 +135,39 @@ export default function Testimonials() {
           </motion.div>
         </div>
 
-
-        {/* ===================== MOBILE — COMENTÁRIOS AJUSTADOS ===================== */}
+        {/* MOBILE — COMENTÁRIOS (ABAIXADO + SEM CAIXA APARENTE) */}
         {isMobile && (
-          <div className="relative z-30 -mt-4 mb-3 overflow-hidden">
+          <div className="relative z-30 mt-6 mb-4 overflow-hidden">
             <MobileComments comments={comments} />
           </div>
         )}
 
-
-        {/* ===================== DESKTOP COMENTÁRIOS (INTACTO) ===================== */}
+        {/* DESKTOP — COMENTÁRIOS (INTACTO) */}
         {!isMobile && (
           <div className="relative z-10 pt-20">
             <DesktopCascadeComments comments={comments} />
           </div>
         )}
 
-
-
-        {/* ===================== VÍDEOS ===================== */}
+        {/* VÍDEOS */}
         <div className="relative mt-10 flex justify-center items-center h-[520px] z-10">
-          <VideoCard data={videos[left]} pos="left" isMobile={isMobile} onClick={() => setActive(left)} />
-          <VideoCard data={videos[active]} pos="center" isMobile={isMobile} />
-          <VideoCard data={videos[right]} pos="right" isMobile={isMobile} onClick={() => setActive(right)} />
+          <VideoCard
+            data={videos[left]}
+            pos="left"
+            isMobile={isMobile}
+            onClick={() => setActive(left)}
+          />
+          <VideoCard
+            data={videos[active]}
+            pos="center"
+            isMobile={isMobile}
+          />
+          <VideoCard
+            data={videos[right]}
+            pos="right"
+            isMobile={isMobile}
+            onClick={() => setActive(right)}
+          />
 
           <button
             onClick={prev}
@@ -184,17 +192,15 @@ export default function Testimonials() {
   );
 }
 
-
 /* ======================================================================= */
-/* MOBILE COMMENTS — ALINHADAS E BAIXADAS                                 */
+/* MOBILE COMMENTS — ALINHADAS, MAIS BAIXAS E SEM LINHAS VISÍVEIS         */
 /* ======================================================================= */
 
 function MobileComments({ comments }: { comments: Comment[] }) {
   const loop = [...comments, ...comments];
 
   return (
-    <div className="relative z-30 overflow-hidden mt-2 mb-2">
-
+    <div className="relative z-30 overflow-hidden mt-0 mb-0">
       <div className="mobile-comment-stream animate-mobileCommentStream">
         {loop.map((c, idx) => (
           <div
@@ -211,7 +217,9 @@ function MobileComments({ comments }: { comments: Comment[] }) {
 
             <div className="mt-4 flex items-center justify-between">
               <div>
-                <p className="text-white font-semibold text-sm truncate">{c.name}</p>
+                <p className="text-white font-semibold text-sm truncate">
+                  {c.name}
+                </p>
                 <p className="text-white/60 text-xs truncate">{c.role}</p>
               </div>
 
@@ -225,12 +233,10 @@ function MobileComments({ comments }: { comments: Comment[] }) {
         ))}
       </div>
 
-
-      {/* REMOVE CAIXA VISÍVEL — BORDAS LATERAIS E INFERIOR RESPONSIVAS */}
-      <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-neutral-900 to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-neutral-900 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-neutral-900 to-transparent pointer-events-none" />
-
+      {/* Gradientes para esconder completamente bordas laterais e inferior */}
+      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-neutral-900 via-neutral-900/90 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-neutral-900 via-neutral-900/90 to-transparent pointer-events-none" />
 
       <style>{`
         .mobile-comment-stream {
@@ -253,8 +259,6 @@ function MobileComments({ comments }: { comments: Comment[] }) {
   );
 }
 
-
-
 /* ======================================================================= */
 /* DESKTOP — NÃO ALTERADO                                                 */
 /* ======================================================================= */
@@ -265,7 +269,6 @@ function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
   return (
     <div className="relative pointer-events-none">
       <div className="relative mx-auto max-w-6xl h-[220px] overflow-hidden">
-
         <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
 
         <div className="lucy-comment-stream-horizontal animate-lucyCommentStreamHorizontal items-center">
@@ -295,7 +298,6 @@ function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
   );
 }
 
-
 function CommentCard({ c }: { c: Comment }) {
   return (
     <div className="w-[420px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.35)] p-5">
@@ -321,10 +323,8 @@ function CommentCard({ c }: { c: Comment }) {
   );
 }
 
-
-
 /* ======================================================================= */
-/* VIDEO CARD — MOBILE AJUSTADO PARA NÃO AUTOPLAY                         */
+/* VIDEO CARD — SEM AUTOPLAY, COM IMAGEM E PLAY/PAUSE EM TODOS            */
 /* ======================================================================= */
 
 function VideoCard({
@@ -352,33 +352,70 @@ function VideoCard({
 
   const [playing, setPlaying] = useState(false);
 
+  // Sempre que o vídeo deixa de ser o card central, ele pausa
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    if (pos !== "center") {
+      v.pause();
+      try {
+        v.currentTime = 0;
+      } catch {
+        /* ignore */
+      }
+      setPlaying(false);
+    }
+  }, [pos]);
+
+  // Força carregar um frame para evitar tela preta (desktop e mobile)
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    const handleLoaded = () => {
+      try {
+        if (v.readyState >= 2) {
+          v.currentTime = 0.1;
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+
+    v.addEventListener("loadedmetadata", handleLoaded);
+    return () => v.removeEventListener("loadedmetadata", handleLoaded);
+  }, []);
+
   const handleClick = () => {
+    // se não é o card central, apenas navega
     if (pos !== "center" && onClick) {
       onClick();
       return;
     }
 
-    if (!videoRef.current) return;
+    const v = videoRef.current;
+    if (!v) return;
 
+    // central: play / pause com áudio
     if (!playing) {
-      videoRef.current.muted = false;
-      videoRef.current.play();
+      v.muted = false;
+      v.play().catch(() => {});
       setPlaying(true);
-      return;
+    } else {
+      v.pause();
+      setPlaying(false);
     }
-
-    videoRef.current.pause();
-    setPlaying(false);
   };
 
   return (
     <div
       onClick={handleClick}
-      className="absolute cursor-pointer transition-all duration-500"
+      className="absolute cursor-pointer transition-all duration-300"
       style={styles[pos]}
     >
       <div
-        className="rounded-3xl overflow-hidden shadow-2xl"
+        className="rounded-3xl overflow-hidden shadow-2xl bg-black"
         style={{ width, height }}
       >
         <video
@@ -386,9 +423,9 @@ function VideoCard({
           src={data.src}
           loop
           playsInline
-          preload="metadata"
+          autoPlay={false}
+          preload="auto"
           muted={false}
-          poster={data.src}
           className="w-full h-full object-cover"
         />
       </div>
@@ -396,7 +433,7 @@ function VideoCard({
       {pos === "center" && (
         <button
           className="
-            absolute top-1/2 left-1/2 
+            absolute top-1/2 left-1/2
             -translate-x-1/2 -translate-y-1/2
             bg-black/60 text-white
             rounded-full p-5
