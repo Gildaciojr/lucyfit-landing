@@ -77,11 +77,11 @@ export default function Testimonials() {
   // TROCA INICIAL — PRIMEIRO VÍDEO SERÁ O depo4
   const videos = useMemo(
     () => [
-      { src: depo4, person: PEOPLE[3] },
-      { src: depo1, person: PEOPLE[0] },
-      { src: depo2, person: PEOPLE[1] },
-      { src: depo3, person: PEOPLE[2] },
-      { src: depo5, person: PEOPLE[4] },
+    { src: depo4, poster: depo4, person: PEOPLE[3] },
+    { src: depo1, poster: depo1, person: PEOPLE[0] },
+    { src: depo2, poster: depo2, person: PEOPLE[1] },
+    { src: depo3, poster: depo3, person: PEOPLE[2] },
+    { src: depo5, poster: depo5, person: PEOPLE[4] },
     ],
     [],
   );
