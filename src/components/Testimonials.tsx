@@ -137,7 +137,7 @@ export default function Testimonials() {
 
         {/* MOBILE — COMENTÁRIOS (ABAIXADO + SEM CAIXA APARENTE) */}
         {isMobile && (
-          <div className="relative z-30 mt-6 mb-4 overflow-hidden">
+          <div className="relative z-30 mt-4 mb-4 overflow-hidden">
             <MobileComments comments={comments} />
           </div>
         )}
@@ -234,9 +234,9 @@ function MobileComments({ comments }: { comments: Comment[] }) {
       </div>
 
       {/* Gradientes para esconder completamente bordas laterais e inferior */}
-      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-neutral-900 via-neutral-900/90 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-neutral-900 via-neutral-900/90 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-14 bg-gradient-to-r from-neutral-700 via-neutral-900/60 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-neutral-700 via-neutral-900/60 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-neutral-700 via-neutral-900/60 to-transparent pointer-events-none" />
 
       <style>{`
         .mobile-comment-stream {
@@ -424,7 +424,8 @@ function VideoCard({
           loop
           playsInline
           autoPlay={false}
-          preload="auto"
+          preload="metadata"
+          poster={data.src}
           muted={false}
           className="w-full h-full object-cover"
         />
