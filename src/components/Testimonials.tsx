@@ -48,8 +48,7 @@ const COMMENTS: Comment[] = [
     role: "Usuária há 1 ano",
   },
   {
-    quote:
-      "O melhor investimento que fiz na minha saúde. A análise nutricional é perfeita!",
+    quote: "O melhor investimento que fiz na minha saúde. A análise nutricional é perfeita!",
     name: "Rafael Santos",
     role: "Perdeu 8kg",
   },
@@ -74,154 +73,147 @@ const COMMENTS: Comment[] = [
 export default function Testimonials() {
   const isMobile = useIsMobile();
 
-    // TROCA INICIAL — PRIMEIRO VÍDEO SERÁ O depo4
-    const videos = useMemo(
-      () => [
+  const videos = useMemo(
+    () => [
       { src: depo4, poster: depo4, person: PEOPLE[3] },
       { src: depo1, poster: depo1, person: PEOPLE[0] },
       { src: depo2, poster: depo2, person: PEOPLE[1] },
       { src: depo3, poster: depo3, person: PEOPLE[2] },
       { src: depo5, poster: depo5, person: PEOPLE[4] },
-      ],
-      [],
-    );
+    ],
+    [],
+  );
 
-    const comments = useMemo(() => COMMENTS, []);
-    const [active, setActive] = useState(0);
+  const comments = useMemo(() => COMMENTS, []);
+  const [active, setActive] = useState(0);
 
-    const prev = () => setActive((i) => (i === 0 ? videos.length - 1 : i - 1));
-    const next = () => setActive((i) => (i === videos.length - 1 ? 0 : i + 1));
+  const prev = () => setActive((i) => (i === 0 ? videos.length - 1 : i - 1));
+  const next = () => setActive((i) => (i === videos.length - 1 ? 0 : i + 1));
 
-    const left = (active - 1 + videos.length) % videos.length;
-    const right = (active + 1) % videos.length;
+  const left = (active - 1 + videos.length) % videos.length;
+  const right = (active + 1) % videos.length;
 
-    return (
-      <section
-        id="testimonials"
-        className="
-          relative 
-          pt-14 lg:pt-24 
-          pb-24 lg:pb-32 
-          bg-gradient-to-b 
-          from-purple-50/30 
-          via-neutral-900 
-          to-black 
-          overflow-hidden
-        "
-      >
-        <div className="container mx-auto max-w-7xl px-6 relative">
-          {/* CARD PRETO — TÍTULO */}
-          <div className="relative flex justify-center z-30 mb-[-12px] lg:mb-[-48px]">
-            <motion.div
-              initial={isMobile ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="
-                relative w-full max-w-5xl rounded-3xl bg-black
-                px-6 md:px-10
-                pt-12 md:pt-20
-                pb-16 lg:pb-36
-                text-center shadow-2xl
-              "
-            >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-                Não acredite somente em nós — veja quem já usa.
-              </h2>
+  return (
+    <section
+      id="testimonials"
+      className="
+        relative 
+        pt-14 lg:pt-24 
+        pb-24 lg:pb-32 
+        bg-gradient-to-b 
+        from-purple-50/30 
+        via-neutral-900 
+        to-black 
+        overflow-hidden
+      "
+    >
+      <div className="container mx-auto max-w-7xl px-6 relative">
 
-              <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
-                Junte-se a milhares de pessoas que transformaram sua alimentação.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* MOBILE — COMENTÁRIOS (ABAIXADO + SEM CAIXA APARENTE) */}
-          {isMobile && (
-            <div className="relative z-30 mt-4 mb-4 overflow-hidden">
-              <MobileComments comments={comments} />
-            </div>
-          )}
-
-          {/* DESKTOP — COMENTÁRIOS (INTACTO) */}
-          {!isMobile && (
-            <div className="relative z-10 pt-20">
-              <DesktopCascadeComments comments={comments} />
-            </div>
-          )}
-
-          {/* VÍDEOS */}
-          <div className="relative mt-10 flex justify-center items-center h-[520px] z-10">
-            <VideoCard
-              data={videos[left]}
-              pos="left"
-              isMobile={isMobile}
-              onClick={() => setActive(left)}
-            />
-            <VideoCard
-              data={videos[active]}
-              pos="center"
-              isMobile={isMobile}
-            />
-            <VideoCard
-              data={videos[right]}
-              pos="right"
-              isMobile={isMobile}
-              onClick={() => setActive(right)}
-            />
-
-            <button
-              onClick={prev}
-              className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${
-                isMobile ? "left-2 p-2" : "left-6 md:left-16 p-3"
-              }`}
-            >
-              <ChevronLeft />
-            </button>
-
-            <button
-              onClick={next}
-              className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${
-                isMobile ? "right-2 p-2" : "right-6 md:right-16 p-3"
-              }`}
-            >
-              <ChevronRight />
-            </button>
-          </div>
+        <div className="relative flex justify-center z-30 mb-[-12px] lg:mb-[-48px]">
+          <motion.div
+            initial={isMobile ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="
+              relative w-full max-w-5xl rounded-3xl bg-black
+              px-6 md:px-10
+              pt-12 md:pt-20
+              pb-16 lg:pb-36
+              text-center shadow-2xl
+            "
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+              Não acredite somente em nós — veja quem já usa.
+            </h2>
+            <p className="mt-5 text-gray-300 text-base md:text-lg max-w-xl mx-auto">
+              Junte-se a milhares de pessoas que transformaram sua alimentação.
+            </p>
+          </motion.div>
         </div>
-      </section>
-    );
-  }
 
-  /* ======================================================================= */
-  /* MOBILE COMMENTS — ALINHADAS, MAIS BAIXAS E SEM LINHAS VISÍVEIS         */
-  /* ======================================================================= */
+        {isMobile && (
+          <div className="relative z-30 mt-4 mb-4 overflow-hidden">
+            <MobileComments comments={comments} />
+          </div>
+        )}
 
-  function MobileComments({ comments }: { comments: Comment[] }) {
-    const loop = [...comments, ...comments];
+        {!isMobile && (
+          <div className="relative z-10 pt-20">
+            <DesktopCascadeComments comments={comments} />
+          </div>
+        )}
 
-    return (
-      <div className="relative z-30 overflow-hidden mt-0 mb-0">
-        <div className="mobile-comment-stream animate-mobileCommentStream">
-          {loop.map((c, idx) => (
-            <div
-              key={idx}
-              className="min-w-[250px] max-w-[250px] mx-2 rounded-2xl
-                border border-white/10
-                bg-white/5 backdrop-blur-md
-                px-4 py-4
-                shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
-            >
-              <p className="text-white/90 text-[13px] leading-relaxed">
-                “{c.quote}”
-              </p>
+        <div className="relative mt-10 flex justify-center items-center h-[520px] z-10">
+          <VideoCard
+            data={videos[left]}
+            pos="left"
+            isMobile={isMobile}
+            onClick={() => setActive(left)}
+          />
+          <VideoCard
+            data={videos[active]}
+            pos="center"
+            isMobile={isMobile}
+          />
+          <VideoCard
+            data={videos[right]}
+            pos="right"
+            isMobile={isMobile}
+            onClick={() => setActive(right)}
+          />
 
-              <div className="mt-4 flex items-center justify-between">
-                <div>
-                  <p className="text-white font-semibold text-sm truncate">
-                    {c.name}
-                  </p>
-                  <p className="text-white/60 text-xs truncate">{c.role}</p>
-                </div>
+          <button
+            onClick={prev}
+            className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${
+              isMobile ? "left-2 p-2" : "left-6 md:left-16 p-3"
+            }`}
+          >
+            <ChevronLeft />
+          </button>
+
+          <button
+            onClick={next}
+            className={`absolute z-30 rounded-full bg-white/90 shadow-md hover:bg-white transition ${
+              isMobile ? "right-2 p-2" : "right-6 md:right-16 p-3"
+            }`}
+          >
+            <ChevronRight />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ====================== MOBILE COMMENTS ====================== */
+
+function MobileComments({ comments }: { comments: Comment[] }) {
+  const loop = [...comments, ...comments];
+
+  return (
+    <div className="relative z-30 overflow-hidden mt-0 mb-0">
+      <div className="mobile-comment-stream animate-mobileCommentStream">
+        {loop.map((c, idx) => (
+          <div
+            key={idx}
+            className="min-w-[250px] max-w-[250px] mx-2 rounded-2xl
+              border border-white/10
+              bg-white/5 backdrop-blur-md
+              px-4 py-4
+              shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+          >
+            <p className="text-white/90 text-[13px] leading-relaxed">
+              “{c.quote}”
+            </p>
+
+            <div className="mt-4 flex items-center justify-between">
+              <div>
+                <p className="text-white font-semibold text-sm truncate">
+                  {c.name}
+                </p>
+                <p className="text-white/60 text-xs truncate">{c.role}</p>
+              </div>
 
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -233,7 +225,6 @@ export default function Testimonials() {
         ))}
       </div>
 
-      {/* Gradientes para esconder completamente bordas laterais e inferior */}
       <div className="absolute inset-y-0 left-0 w-14 bg-gradient-to-r from-neutral-700 via-neutral-900/60 to-transparent pointer-events-none" />
       <div className="absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-neutral-700 via-neutral-900/60 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-neutral-700 via-neutral-900/60 to-transparent pointer-events-none" />
@@ -259,9 +250,7 @@ export default function Testimonials() {
   );
 }
 
-/* ======================================================================= */
-/* DESKTOP — NÃO ALTERADO                                                 */
-/* ======================================================================= */
+/* ====================== DESKTOP COMMENTS ====================== */
 
 function DesktopCascadeComments({ comments }: { comments: Comment[] }) {
   const loop = useMemo(() => [...comments, ...comments], [comments]);
@@ -323,9 +312,7 @@ function CommentCard({ c }: { c: Comment }) {
   );
 }
 
-/* ======================================================================= */
-/* VIDEO CARD — SEM AUTOPLAY, COM IMAGEM E PLAY/PAUSE EM TODOS            */
-/* ======================================================================= */
+/* ====================== VIDEO CARDS ====================== */
 
 function VideoCard({
   data,
@@ -334,10 +321,10 @@ function VideoCard({
   onClick,
 }: {
   data: {
-  src: string;
-  poster: string;
-  person: { name: string; age: number };
-};
+    src: string;
+    poster: string;
+    person: { name: string; age: number };
+  };
   pos: Pos;
   isMobile: boolean;
   onClick?: () => void;
@@ -356,45 +343,39 @@ function VideoCard({
 
   const [playing, setPlaying] = useState(false);
 
-  // 🔒 Ao montar, garante que o vídeo esteja pausado
+  // 🔒 Garante que todos começam pausados SEMPRE
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     v.autoplay = false;
     v.pause();
+    v.currentTime = 0.1;
   }, []);
 
-  // 🔒 Sempre que NÃO for o card central, pausa e reseta o estado
+  // 🔒 Quando deixa de ser central, pausa e reseta
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-
     if (pos !== "center") {
       v.pause();
+      v.currentTime = 0.1;
       setPlaying(false);
     }
   }, [pos]);
 
+  // 🎬 Clique → play/pause APENAS no central
   const handleClick = () => {
-    // Se não é o card central, apenas navega no carrossel
+    const v = videoRef.current;
+    if (!v) return;
+
     if (pos !== "center" && onClick) {
       onClick();
       return;
     }
 
-    const v = videoRef.current;
-    if (!v) return;
-
     if (!playing) {
       v.muted = false;
-      v
-        .play()
-        .then(() => {
-          setPlaying(true);
-        })
-        .catch(() => {
-          // se o navegador bloquear autoplay, não faz nada
-        });
+      v.play().then(() => setPlaying(true));
     } else {
       v.pause();
       setPlaying(false);
@@ -415,17 +396,17 @@ function VideoCard({
           ref={videoRef}
           src={data.src}
           poster={data.poster}
-          loop={false}
-          autoPlay={false}
-          playsInline
           preload="metadata"
           muted={false}
+          autoPlay={false}
+          playsInline
           controls={false}
+          loop={false}
           className="w-full h-full object-cover"
         />
       </div>
 
-      {/* 🔘 Botão só aparece quando o vídeo NÃO está tocando */}
+      {/* BOTÃO PLAY/PAUSE SOMENTE NO CENTRAL */}
       {pos === "center" && !playing && (
         <button
           className="
@@ -436,6 +417,19 @@ function VideoCard({
           "
         >
           ▶
+        </button>
+      )}
+
+      {pos === "center" && playing && (
+        <button
+          className="
+            absolute top-1/2 left-1/2
+            -translate-x-1/2 -translate-y-1/2
+            bg-black/60 text-white
+            rounded-full p-5
+          "
+        >
+          ❚❚
         </button>
       )}
 
