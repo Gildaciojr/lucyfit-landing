@@ -418,34 +418,32 @@ function VideoCard({
         className="rounded-3xl overflow-hidden shadow-2xl bg-black"
         style={{ width, height }}
       >
-
+        <video
+          key={data.src}
+          ref={videoRef}
+          src={data.src}
+          poster={data.poster}
+          preload={pos === "center" ? "auto" : "metadata"}
+          playsInline
+          autoPlay={false}
+          muted={false}
+          controls={false}
+          loop={false}
+          className="block w-full h-full object-cover"
+          style={{
+            pointerEvents: pos === "center" ? "auto" : "none",
+          }}
+        />
       </div>
-      <video
-        key={data.src}
-        ref={videoRef}
-        src={data.src}
-        poster={data.poster}
-        preload={pos === "center" ? "auto" : "metadata"}
-        playsInline
-        autoPlay={false}
-        muted={false}
-        controls={false}
-        loop={false}
-        className="block w-full h-full object-cover" // 👈 block impede bug de dimensionamento
-        style={{
-          pointerEvents: pos === "center" ? "auto" : "none", // 👈 só no central pode clicar
-        }}
-      />
 
-      {/* BOTÃO PLAY/PAUSE SOMENTE NO CENTRAL */}
+      {/* BOTÃO PLAY/PAUSE */}
       {pos === "center" && !playing && (
         <button
           className="
-            absolute top-1/2 left-1/2
-            -translate-x-1/2 -translate-y-1/2
-            bg-black/60 text-white
-            rounded-full p-5
-          "
+          absolute top-1/2 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+          bg-black/60 text-white rounded-full p-5
+        "
         >
           ▶
         </button>
@@ -454,11 +452,10 @@ function VideoCard({
       {pos === "center" && playing && (
         <button
           className="
-            absolute top-1/2 left-1/2
-            -translate-x-1/2 -translate-y-1/2
-            bg-black/60 text-white
-            rounded-full p-5
-          "
+          absolute top-1/2 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+          bg-black/60 text-white rounded-full p-5
+        "
         >
           ❚❚
         </button>
