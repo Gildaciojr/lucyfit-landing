@@ -364,33 +364,16 @@ function VideoCard({
 
   const [playing, setPlaying] = useState(false);
 
-  // 🔒 Garante que todos começam pausados SEMPRE
+  // 🔒 Ao montar, garante que começa pausado (sem mexer no currentTime)
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     v.autoplay = false;
     v.pause();
-    v.currentTime = 0.1;
   }, []);
 
-  // 🔒 Quando deixa de ser central, pausa e reseta
+  // 🔒 Sempre que o card deixar de ser o CENTRAL, pausa e reseta o estado
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.pause();
-    setPlaying(false);
-
-    // força carregar o primeiro frame SEM autoplay
-    const handleLoaded = () => {
-      if (v.readyState >= 2) v.pause();
-    };
-
-    v.addEventListener("loadeddata", handleLoaded);
-    return () => v.removeEventListener("loadeddata", handleLoaded);
-  }, []);
-
-  // 🎬 Clique → play/pause APENAS no central
-  const handleClick = () => {
     const v = videoRef.current;
     if (!v) return;
 
@@ -398,10 +381,31 @@ function VideoCard({
       v.pause();
       setPlaying(false);
     }
+  }, [pos]);
 
+  // 🎬 Clique: se NÃO for o central, apenas navega;
+  // se for o central, faz play/pause naquele vídeo
+  const handleClick = () => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    // 👉 Não é o card central: só chama onClick para trocar o ativo
+    if (pos !== "center") {
+      if (onClick) onClick();
+      return;
+    }
+
+    // 👉 É o card central: play/pause somente nele
     if (!playing) {
       v.muted = false;
-      v.play().then(() => setPlaying(true));
+      v
+        .play()
+        .then(() => {
+          setPlaying(true);
+        })
+        .catch(() => {
+          // se o navegador bloquear, ignora
+        });
     } else {
       v.pause();
       setPlaying(false);
@@ -436,14 +440,14 @@ function VideoCard({
         />
       </div>
 
-      {/* BOTÃO PLAY/PAUSE */}
+      {/* BOTÃO PLAY/PAUSE SOMENTE NO CENTRAL */}
       {pos === "center" && !playing && (
         <button
           className="
-          absolute top-1/2 left-1/2
-          -translate-x-1/2 -translate-y-1/2
-          bg-black/60 text-white rounded-full p-5
-        "
+            absolute top-1/2 left-1/2
+            -translate-x-1/2 -translate-y-1/2
+            bg-black/60 text-white rounded-full p-5
+          "
         >
           ▶
         </button>
@@ -452,10 +456,10 @@ function VideoCard({
       {pos === "center" && playing && (
         <button
           className="
-          absolute top-1/2 left-1/2
-          -translate-x-1/2 -translate-y-1/2
-          bg-black/60 text-white rounded-full p-5
-        "
+            absolute top-1/2 left-1/2
+            -translate-x-1/2 -translate-y-1/2
+            bg-black/60 text-white rounded-full p-5
+          "
         >
           ❚❚
         </button>
