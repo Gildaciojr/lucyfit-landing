@@ -350,14 +350,14 @@ function VideoCard({
 
   const styles = {
     center: { transform: "translateX(0) scale(1)", zIndex: 20, opacity: 1 },
-    left: { transform: `translateX(-${offset}px) scale(0.9)`, zIndex: 10 },
-    right: { transform: `translateX(${offset}px) scale(0.9)`, zIndex: 10 },
+    left: { transform: `translateX(-${offset}px) scale(0.9)`, opacity: 0.85, zIndex: 10 },
+    right: { transform: `translateX(${offset}px) scale(0.9)`, opacity: 0.85, zIndex: 10 },
   } as const;
 
   const [playing, setPlaying] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  /** 👉 Reseta vídeo sempre que sair do centro */
+  // 👉 Quando não está no centro → pausa e mostra a imagem
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -369,9 +369,8 @@ function VideoCard({
     }
   }, [pos]);
 
-  /** 👉 Clique */
   const handleClick = () => {
-    // se não for central → troca card apenas
+    // 👉 Se o card não for o central → só muda o ativo
     if (pos !== "center") {
       onClick?.();
       return;
@@ -380,20 +379,25 @@ function VideoCard({
     const v = videoRef.current;
     if (!v) return;
 
-    // PRIMEIRO PLAY → força carregar vídeo e remover imagem
+    // 👉 Primeiro clique: carrega o vídeo e inicia
     if (!loaded) {
+      v.src = data.src;
       v.load();
-      setLoaded(true);
       v.muted = false;
-      v.play().then(() => setPlaying(true));
+      v.play().then(() => {
+        setLoaded(true);
+        setPlaying(true);
+      });
       return;
     }
 
-    if (!playing) {
-      v.play().then(() => setPlaying(true));
-    } else {
+    // 👉 Se já carregou: play/pause
+    if (playing) {
       v.pause();
       setPlaying(false);
+    } else {
+      v.play();
+      setPlaying(true);
     }
   };
 
@@ -407,50 +411,60 @@ function VideoCard({
         className="rounded-3xl overflow-hidden shadow-2xl bg-black relative"
         style={{ width, height }}
       >
-        {/* IMAGEM INICIAL → SEMPRE aparece enquanto não clicou ou não está carregado */}
+        {/* POSTER 😍 Sempre exibe imagem até carregar */}
         {(!loaded || pos !== "center") && (
           <img
             src={data.poster}
-            className="w-full h-full object-cover block"
+            alt="poster"
+            className="absolute top-0 left-0 w-full h-full object-cover"
             draggable={false}
           />
         )}
 
-        {/* VÍDEO → só aparece se estiver central e ativado */}
+        {/* VÍDEO — só exibe em cards centrais e após clicar */}
         {pos === "center" && (
           <video
             ref={videoRef}
-            controls={false}
-            autoPlay={false}
             playsInline
-            muted={false}
             preload="none"
+            autoPlay={false}
             loop={false}
-            className={`w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-300 ${
+            muted={false}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 ${
               loaded ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
-            src={loaded ? data.src : undefined}
           />
-        )}
-
-        {/* ▶️ BOTÕES */}
-        {pos === "center" && !playing && (
-          <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/70 text-white rounded-full p-4">
-            ▶
-          </button>
-        )}
-        {pos === "center" && playing && (
-          <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/70 text-white rounded-full p-4">
-            ❚❚
-          </button>
         )}
       </div>
 
+      {/* Botão Play/Pause — só aparece no central */}
+      {pos === "center" && !playing && (
+        <button className="
+          absolute top-1/2 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+          bg-black/70 text-white rounded-full p-4
+        ">
+          ▶
+        </button>
+      )}
+
+      {pos === "center" && playing && (
+        <button className="
+          absolute top-1/2 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+          bg-black/70 text-white rounded-full p-4
+        ">
+          ❚❚
+        </button>
+      )}
+
+      {/* Nome + Estrelas */}
       <div className="mt-4 text-center space-y-1">
         <p className="text-sm font-semibold text-white">
           {data.person.name},{" "}
           <span className="text-gray-400 font-normal">{data.person.age} anos</span>
         </p>
+
         <div className="flex justify-center gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />
