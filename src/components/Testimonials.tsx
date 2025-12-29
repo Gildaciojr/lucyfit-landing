@@ -414,22 +414,20 @@ function VideoCard({
       className="absolute cursor-pointer transition-all duration-300"
       style={styles[pos]}
     >
-      <div
-        className="rounded-3xl overflow-hidden shadow-2xl bg-black"
-        style={{ width, height }}
-      >
-        <video
-          key={data.src} // 🔑 força recarregar ao trocar de vídeo
-          ref={videoRef}
-          src={data.src}
-          poster={data.poster}
-          preload="metadata"
-          playsInline
-          muted={false}
-          controls={false}
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <video
+        key={data.src} // 🔑 força recarregar ao trocar de vídeo
+        ref={videoRef}
+        src={data.src}
+        poster={data.poster}
+        preload={pos === "center" ? "auto" : "metadata"} // ⚡ carrega rápido somente o central
+        playsInline
+        autoPlay={false}
+        muted={false}
+        controls={false}
+        loop={false}
+        className="w-full h-full object-cover"
+        style={{ pointerEvents: "none" }} // 🚫 evita clique errado no mobile
+      />
 
       {/* BOTÃO PLAY/PAUSE SOMENTE NO CENTRAL */}
       {pos === "center" && !playing && (
